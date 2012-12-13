@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <h:panelGrid columns="1">
+        <h:panelGrid columns="2">
+            <h:outputText value="#{msg.description}: "/> 
+            <h:outputText/>
+            <p:inputTextarea id="taAtividade"
+                             value="#{cadProjeto.selecAtividade.descricao}"
+                             style="width:700px;height:50px;"
+                             maxlength="200"
+                             cols="50"
+                             rows="4"
+                             autoResize="false"/>                
+            <p:message for="taAtividade"/>
+        </h:panelGrid> 
+        <h:panelGrid columns="3">
+            <p:commandButton actionListener="#{cadProjeto.addAtividade()}" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao
+                             :messages" 
+                             value="#{msg.add}"
+                             rendered="#{cadProjeto.alterarAtividade == false}"/>
+            <p:commandButton actionListener="#{cadProjeto.alterarAtividade()}"  
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao
+                             :messages"
+                             value="#{msg.alter}"
+                             rendered="#{cadProjeto.alterarAtividade == true}"/>
+            <p:commandButton actionListener="#{cadProjeto.novaAtividade()}"  
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             value="#{msg.newValue}"/>
+        </h:panelGrid>
+    </h:panelGrid>  
+    <p:dataTable emptyMessage="#{msg.noActivitiesFound}"
+                 value="#{cadProjeto.selecUnidade.atividades}" 
+                 var="atividade"
+                 paginator="true"
+                 paginatorPosition="top"
+                 rows="3"  
+                 paginatorTemplate="{CurrentPageReport}  
+                 {FirstPageLink} 
+                 {PreviousPageLink} 
+                 {PageLinks} 
+                 {NextPageLink} 
+                 {LastPageLink} 
+                 {RowsPerPageDropdown}">
+        <p:column style="max-width: 450px; width: 650px;">
+            <f:facet name="header">
+                #{msg.activities}
+            </f:facet>
+            <h:outputText value="#{atividade.descricao}"/>
+        </p:column>
+        <p:column>
+            <p:commandButton icon="ui-icon ui-icon-pencil" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"                                
+                             title="#{msg.alter}">
+                <f:setPropertyActionListener value="#{atividade}" 
+                                             target="#{cadProjeto.selecAtividade}" />
+            </p:commandButton>
+            <p:commandButton icon="ui-icon ui-icon-close" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             title="#{msg.delete}"
+                             oncomplete="confirmDeleteAtividade.show()">
+                <f:setPropertyActionListener value="#{atividade}" 
+                                             target="#{cadProjeto.selecAtividade}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>    
+
+</ui:composition>

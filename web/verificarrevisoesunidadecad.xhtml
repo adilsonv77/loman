@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc"                
+                template="template.xhtml">
+
+    <ui:define name="corpo">          
+        <h:form id="formVerificarRevisoesUnidade"
+                enctype="multipart/form-data">            
+            <p:fieldset legend="#{msg.problemUnits}">
+                <p:dataTable rowKey="#{unidade.nome}"
+                             emptyMessage="#{msg.noUnitsWithProblems}" 
+                             value="#{cadRoteiro.unidadesComProblemas}"
+                             var="unidade"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="10"
+                             selection="#{cadRoteiro.selecUnidade}" 
+                             selectionMode="single"
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">                    
+                    <p:ajax event="rowSelect" 
+                            listener="#{cadRoteiro.onRowSelectUnidade}"
+                            update=":formVerificarRevisoesUnidade 
+                            :messages
+                            :tabUnidadeSlideTarefa:formDadosUnidade
+                            :tabUnidadeSlideTarefa:formCadastroSlide
+                            :tabUnidadeSlideTarefa:formTabelaSlides
+                            :tabUnidadeSlideTarefa:formCadastroTarefas
+                            :tabUnidadeSlideTarefa:formTabelaTarefas"/>            
+                    <f:facet name="header">
+                        <p:commandButton icon="ui-icon-pencil"
+                                         style="float: left;"
+                                         disabled="#{cadRoteiro.unidadeDesabilitado}"
+                                         value="#{msg.guide}"
+                                         actionListener="#{cadRoteiro.editarRoteiro(unidade)}"
+                                         oncomplete="dialogUnidadeSlideTarefa.show()"/>                        
+                    </f:facet>
+                    <p:column sortBy="#{unidade.nome}"
+                              style="width: 40%">
+                        <f:facet name="header">
+                            #{msg.unit}
+                        </f:facet>
+                        <h:outputText value="#{unidade.nome}"/>
+                    </p:column>
+                    <p:column sortBy="#{unidade.projeto.titulo}"
+                              style="width: 60%">
+                        <f:facet name="header">
+                            #{msg.project}
+                        </f:facet>
+                        <h:outputText value="#{unidade.projeto.titulo}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>             
+
+            <p:fieldset legend="#{msg.occurrences}">
+                <p:dataTable id="OcorrenciasUnidade" 
+                             emptyMessage="#{msg.noOccurrencesForUnitsFound}" 
+                             value="#{cadRoteiro.ocorrenciasUnidade}"
+                             var="ocorrencia"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="10"
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">
+                    <p:column sortBy="#{ocorrencia.dataModificacao}">
+                        <f:facet name="header">
+                            #{msg.dataModificacao}
+                        </f:facet>
+                        <h:outputText value="#{cadRoteiro.formatarDataOcorrencia(ocorrencia)}"/>
+                    </p:column>
+                    <p:column sortBy="#{ocorrencia.usuario.nome}">
+                        <f:facet name="header">
+                            #{msg.user}
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.usuario.nome}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.description}
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.descricao}"/>
+                    </p:column> 
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.observation}
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.observacao}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>            
+
+        </h:form>  
+
+        <ui:include src="roteirounidadeslidetarefa.xhtml"/>
+    </ui:define> 
+
+</ui:composition>

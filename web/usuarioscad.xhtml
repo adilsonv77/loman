@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc"
+                template="templateCRUD.xhtml">
+    
+    <ui:param name="title" 
+              value="#{msg.user}"/>
+    <ui:param name="cad" 
+              value="#{cadUsuario}"/>
+    <ui:define name="fields">
+        <p:focus context="painelUsuario"/>
+        <h:panelGrid id="painelUsuario"
+                     columns="3"
+                     cellspacing="5">
+            <h:outputText value="#{msg.nomeCompleto} : "/>
+            <udesc:campoPesquisa cad="#{cadUsuario}" 
+                                 maxLength="50"/>
+            <h:outputText/>
+            <h:outputText value="#{msg.nick} : "/>
+            <p:inputText id="nick" 
+                         value="#{cadUsuario.registro.nick}" 
+                         size="30" 
+                         maxlength="10"/>
+            <p:message for="nick"/>
+            <h:outputText value="#{msg.email} : "/>
+            <p:inputText id="email" 
+                         value="#{cadUsuario.registro.email}" 
+                         size="30" 
+                         maxlength="150"/>
+            <p:message for="email"/>
+            <h:outputText value="#{msg.password} : "/>
+            <p:password id="senha" 
+                        value="#{cadUsuario.registro.senha}" 
+                        size="30" 
+                        maxlength="6" 
+                        promptLabel="#{msg.typePassword}" 
+                        weakLabel="#{msg.weakPassword}"
+                        goodLabel="#{msg.goodPassword}"
+                        strongLabel="#{msg.strongPassword}"/>
+            <p:message for="senha"/>
+            <h:outputText value="#{msg.retypePassword} : "/>
+            <p:password id="redigiteSenha"  
+                        value="#{cadUsuario.senha2}" 
+                        size="30" 
+                        maxlength="6"
+                        promptLabel="#{msg.typePassword}" 
+                        weakLabel="#{msg.weakPassword}"
+                        goodLabel="#{msg.goodPassword}"
+                        strongLabel="#{msg.strongPassword}"/>
+            <p:message for="redigiteSenha"/>
+            <h:outputText value="#{msg.admin} : "/>
+            <p:selectBooleanCheckbox value="#{cadUsuario.registro.administrador}"/>
+            <h:outputText/>
+        </h:panelGrid>
+    </ui:define>
+
+</ui:composition>

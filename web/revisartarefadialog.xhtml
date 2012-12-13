@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog id="dialogRevisarTarefa" 
+              header="#{msg.reviewTask}" 
+              widgetVar="dialogRevisarTarefa" 
+              resizable="false"
+              modal="true"
+              width="800">  
+        <h:panelGrid columns="2">                          
+            <h:outputText value="#{msg.title}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.titulo}"/> 
+
+            <h:outputText value="#{msg.description}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.descricao}"/>
+
+            <h:outputText value="#{msg.dataEntrega}: "/>
+            <p:calendar value="#{cadTarefa.selecTarefa.dataEntrega}"
+                        locale="pt_BR"
+                        disabled="true"/>
+
+            <h:outputText value="#{msg.user}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.usuario.nome}"/>
+
+            <h:outputText value="#{msg.type}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.papelEnum.toString()}"/>
+
+            <h:outputText value="#{msg.stats}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.status.toString()}"/>                   
+        </h:panelGrid>                 
+
+        <p:fieldset legend="#{msg.material}">        
+            <p:dataTable id="MateriaisTarefa"
+                         emptyMessage="#{msg.noMaterialsFound}" 
+                         value="#{cadTarefa.ocorrenciasTarefaComMaterial}"
+                         var="ocorrencia"
+                         paginator="true"
+                         paginatorPosition="top"
+                         rows="10"
+                         paginatorTemplate="{CurrentPageReport}  
+                         {FirstPageLink} 
+                         {PreviousPageLink} 
+                         {PageLinks} 
+                         {NextPageLink} 
+                         {LastPageLink} 
+                         {RowsPerPageDropdown}">
+                <p:column sortBy="#{ocorrencia.usuario.nome}"
+                          style="width: 25%">
+                    <f:facet name="header">
+                        #{msg.user}
+                    </f:facet>
+                    <h:outputText value="#{ocorrencia.usuario.nome}"/>
+                </p:column>
+                <p:column sortBy="#{ocorrencia.dataModificacao}"
+                          style="width: 15%">
+                    <f:facet name="header">
+                        #{msg.dataModificacao}
+                    </f:facet>
+                    <h:outputText value="#{cadTarefa.formatarDataOcorrencia(ocorrencia)}"/>
+                </p:column>                        
+                <p:column style="width: 25%">                                  
+                    <f:facet name="header">
+                        #{msg.observation}
+                    </f:facet>
+                    <h:outputText value="#{ocorrencia.observacao}"/>
+                </p:column>
+                <p:column style="width: 25%">
+                    <f:facet name="header">
+                        #{msg.archive}
+                    </f:facet>
+                    <h:outputText value="#{cadTarefa.formatarNomeArquivo(ocorrencia)}"/>
+                </p:column>
+                <p:column style="width: 10%">
+                    <p:commandLink id="downloadLinkTarefa" 
+                                   value="Download"
+                                   actionListener="#{cadTarefa.dowloadMaterial(ocorrencia)}"
+                                   ajax="false">                                
+                        <p:fileDownload value="#{cadTarefa.file}" />  
+                    </p:commandLink> 
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
+    </p:dialog>   
+
+</ui:composition>

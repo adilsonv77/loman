@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+
+
+    <p:dialog id="dialogTramitarUnidade" 
+              header="#{msg.proceedingUnit}" 
+              widgetVar="dialogTramitarUnidade" 
+              resizable="false"
+              modal="true">  
+
+        <h:panelGrid columns="2">                                    
+            <h:outputText value="#{msg.name}:"/>
+            <h:outputText value="#{cadUnidade.selecUnidade.nome}"/>
+
+            <h:outputText value="#{msg.objectives}: "/>  
+            <p:selectManyCheckbox value="#{cadUnidade.objetivosSelecionados}"  
+                                  layout="pageDirection"
+                                  converter="objetivoConverter">  
+                <f:selectItems value="#{cadUnidade.selecUnidade.objetivos}"/>  
+            </p:selectManyCheckbox> 
+        </h:panelGrid>       
+
+        <h:panelGrid columns="2">
+            <p:commandButton value="#{msg.record}"
+                             actionListener="#{cadUnidade.tramiteUnidade()}"
+                             update="@form
+                             :messages"/>  
+            <p:commandButton value="#{msg.cancel}"
+                             oncomplete="dialogTramitarUnidade.hide()"/>
+        </h:panelGrid>
+
+    </p:dialog>
+
+</ui:composition>

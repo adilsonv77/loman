@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc"
+                template="template.xhtml">
+
+    <ui:define name="corpo">
+
+        <h:form id="form" styleClass="ui-widget">
+            <p:focus />
+            <p:fieldset legend="#{title}">                            
+                <ui:insert name="fields"/>
+                <br></br>
+                <udesc:crudBotoes cad="#{cad}"/>
+            </p:fieldset>
+        </h:form>
+        <udesc:pesquisa id="udescPesq" title="#{title}" cad="#{cad}"/>
+
+    </ui:define>
+
+</ui:composition>

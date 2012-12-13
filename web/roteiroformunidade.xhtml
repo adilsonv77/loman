@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    
+    <h:form id="formDadosUnidade">
+        <h:panelGrid columns="2">
+            <h:outputText value="#{msg.name} : "/>
+            <h:outputText value="#{cadRoteiro.selecUnidade.nome}"/>
+            <h:outputText value="#{msg.duration} : "/>
+            <h:outputText value="#{cadRoteiro.selecUnidade.descricao}"/>                                
+        </h:panelGrid>
+        <p:tabView>
+            <p:tab title="#{msg.objectives}">
+                <p:dataTable emptyMessage="#{msg.noObjectivesFound}" 
+                             value="#{cadRoteiro.selecUnidade.objetivos}" 
+                             var="objetivo"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="5"  
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.objectives}
+                        </f:facet>
+                        <h:outputText value="#{objetivo.descricao}"/>
+                    </p:column>            
+                </p:dataTable>
+            </p:tab>         
+            <p:tab title="#{msg.contents}">
+                <p:dataTable emptyMessage="#{msg.noContentsFound}" 
+                             value="#{cadRoteiro.selecUnidade.conteudos}" 
+                             var="conteudo"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="5"  
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.contents}
+                        </f:facet>
+                        <h:outputText value="#{conteudo.descricao}"/>
+                    </p:column>                       
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="#{msg.activities}">
+                <p:dataTable emptyMessage="#{msg.noActivitiesFound}"
+                             value="#{cadRoteiro.selecUnidade.atividades}" 
+                             var="atividade"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="5"  
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.activities}
+                        </f:facet>
+                        <h:outputText value="#{atividade.descricao}"/>
+                    </p:column>                        
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="#{msg.assessmentForms}">
+                <p:dataTable emptyMessage="#{msg.noAssessmentFormsFound}" 
+                             value="#{cadRoteiro.selecUnidade.formasAvaliacao}"
+                             var="formaAvaliacao"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="5"  
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.assessmentForms}
+                        </f:facet>
+                        <h:outputText value="#{formaAvaliacao.descricao}"/>
+                    </p:column>                        
+                </p:dataTable>
+            </p:tab>
+        </p:tabView>                                   
+    </h:form>  
+    
+</ui:composition>

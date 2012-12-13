@@ -1,0 +1,114 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc"                
+                template="template.xhtml">
+
+    <ui:define name="corpo">          
+        <h:form id="formTramitarUnidade"
+                rendered="#{cadUsuario.verificarUsuarioProfessorConteudista()}"
+                enctype="multipart/form-data">            
+            <p:fieldset legend="#{msg.finishedUnits}">
+                <p:dataTable rowKey="#{unidade.nome}"
+                             emptyMessage="#{msg.noUnitsFound}" 
+                             value="#{cadUnidade.unidadesProntasParaRevisao}"
+                             var="unidade"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="10"
+                             selection="#{cadUnidade.selecUnidade}" 
+                             selectionMode="single"
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">                    
+                    <p:ajax event="rowSelect" 
+                            listener="#{cadUnidade.onRowSelectUnidade}"   
+                            update=":formTramitarUnidade:OcorrenciasUnidade"/>                                                                                                                                                                  
+                    <p:column sortBy="#{unidade.duracao}"
+                              style="width: 20%">
+                        <f:facet name="header">
+                            #{msg.duration}
+                        </f:facet>
+                        <h:outputText value="#{unidade.duracao}"/>
+                    </p:column>
+                    <p:column sortBy="#{unidade.nome}"
+                              style="width: 25%">
+                        <f:facet name="header">
+                            #{msg.unit}
+                        </f:facet>
+                        <h:outputText value="#{unidade.nome}"/>
+                    </p:column>
+                    <p:column sortBy="#{unidade.projeto.titulo}"
+                              style="width: 55%">
+                        <f:facet name="header">
+                            #{msg.project}
+                        </f:facet>
+                        <h:outputText value="#{unidade.projeto.titulo}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton icon="ui-icon-transferthick-e-w"                                                                                                                           
+                                         update=":formTramitarUnidade:dialogTramitarUnidade"
+                                         oncomplete="dialogTramitarUnidade.show()"
+                                         process="@this">
+                            <f:setPropertyActionListener value="#{unidade}"
+                                                         target="#{cadUnidade.selecUnidade}"/>
+                            
+                        </p:commandButton>       
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>             
+
+            <p:fieldset legend="#{msg.occurrences}">
+                <p:dataTable id="OcorrenciasUnidade" 
+                             emptyMessage="#{msg.noOccurrencesForUnitsFound}" 
+                             value="#{cadUnidade.ocorrenciasUnidade}"
+                             var="ocorrencia"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="10"
+                             paginatorTemplate="{CurrentPageReport}  
+                             {FirstPageLink} 
+                             {PreviousPageLink} 
+                             {PageLinks} 
+                             {NextPageLink} 
+                             {LastPageLink} 
+                             {RowsPerPageDropdown}">
+                    <p:column sortBy="#{ocorrencia.dataModificacao}">
+                        <f:facet name="header">
+                            #{msg.dataModificacao}
+                        </f:facet>
+                        <h:outputText value="#{cadUnidade.formatarDataOcorrencia(ocorrencia)}"/>
+                    </p:column>
+                    <p:column sortBy="#{ocorrencia.usuario.nome}">
+                        <f:facet name="header">
+                            #{msg.user}
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.usuario.nome}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.description}
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.descricao}"/>
+                    </p:column> 
+                    <p:column>
+                        <f:facet name="header">
+                            #{msg.observation}
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.observacao}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+
+            <ui:include src="tramitarunidadedialog.xhtml"/>
+
+        </h:form>
+    </ui:define> 
+
+</ui:composition>

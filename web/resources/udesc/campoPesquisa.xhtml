@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="cad" required="true" />
+        <composite:attribute name="maxLength" default="50"/>
+        <composite:attribute name="idComponent" default="udescPesq"/>
+        <composite:attribute name="form" default="form"/>
+        <composite:attribute name="update" />
+        <composite:attribute name="size" default="30" />
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGroup>
+            <p:inputText value= "#{cc.attrs.cad.campoPesquisa}" size="#{cc.attrs.size}"
+                         maxlength="#{cc.attrs.maxLength}"/>
+            <f:verbatim>&amp;nbsp;&amp;nbsp;</f:verbatim>
+
+            <p:commandButton value="#{msg.search}" update=":#{cc.attrs.idComponent}:formPesquisa #{cc.attrs.update}" 
+                             oncomplete="handlePesquisar(args)" 
+                             actionListener="#{cc.attrs.cad.pesquisaRapida}">
+                <f:attribute name="form" value="#{cc.attrs.form}" />
+            </p:commandButton>
+            
+
+        </h:panelGroup>
+        
+        <script type="text/javascript">
+            function handlePesquisar(args) {
+                if (args.mostrarPesquisa == true)
+                    pesquisar.show();
+                else {
+                    // deveria ser um update do form
+                }
+                    
+            }
+        </script>
+    </composite:implementation>
+</html>
+

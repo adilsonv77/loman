@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <h:panelGrid columns="6">
+        <h:outputText value="#{msg.member} : "/>
+        <p:autoComplete id="membro" value="#{cadProjeto.membro.usuario}"
+                        completeMethod="#{cadProjeto.complete}"
+                        var="u"
+                        itemLabel="#{u.nome}"
+                        itemValue="#{u}"
+                        size="50"/>
+        <p:tooltip for="membro" 
+                   value="#{msg.typeUserMember}"/>
+        <h:outputText value="#{msg.paper} : "/>            
+        <p:selectOneMenu value="#{cadProjeto.membro.papelEnum}" 
+                         style="width: 200px;">
+            <f:selectItem itemValue="AVALIADOR"
+                          itemLabel="Avaliador"/>                    
+            <f:selectItem itemValue="DESIGNER"
+                          itemLabel="Designer"/>                
+            <f:selectItem itemValue="PROFESSOR_CONTEUDISTA"
+                          itemLabel="Professor Conteudista"/>
+            <f:selectItem itemValue="PROGRAMADOR"
+                          itemLabel="Programador"/>
+        </p:selectOneMenu>
+        <h:panelGroup>
+            <p:commandButton actionListener="#{cadProjeto.addMember()}" 
+                             update=":formCadastroProjetos:tabEquipeMatrizDI" 
+                             value="#{msg.add}"
+                             rendered="#{cadProjeto.membro.projeto == null}"/>
+            <p:commandButton actionListener="#{cadProjeto.updateMember()}" 
+                             update=":formCadastroProjetos:tabEquipeMatrizDI" 
+                             value="#{msg.alter}"
+                             rendered="#{cadProjeto.membro.projeto != null}"/>
+            <p:commandButton actionListener="#{cadProjeto.newMember()}" 
+                             update=":formCadastroProjetos:tabEquipeMatrizDI" 
+                             value="#{msg.newValue}"
+                             rendered="#{cadProjeto.membro.projeto != null}"/>
+        </h:panelGroup>
+    </h:panelGrid>        
+    <p:dataTable emptyMessage="#{msg.notMembersFound}" 
+                 value="#{cadProjeto.registro.equipe}" 
+                 var="m">
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="#{msg.member}"/>
+            </f:facet>
+            <h:outputText value="#{m.usuario.nome}"/>
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="#{msg.paper}"/>
+            </f:facet>
+            <h:outputText value="#{m.papelEnum.toString()}"/>
+        </p:column>
+        <p:column>
+            <p:commandButton icon="ui-icon ui-icon-pencil" 
+                             update=":formCadastroProjetos:tabEquipeMatrizDI"
+                             title="#{msg.alter}">
+                <f:setPropertyActionListener value="#{m}" 
+                                             target="#{cadProjeto.selecMembro}" />
+            </p:commandButton>
+            <p:commandButton icon="ui-icon ui-icon-close" 
+                             update=":formCadastroProjetos:tabEquipeMatrizDI"
+                             title="#{msg.delete}"
+                             oncomplete="confirmDelete.show()">
+                <f:setPropertyActionListener value="#{m}" 
+                                             target="#{cadProjeto.selecMembro}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>  
+
+    <p:confirmDialog message="#{msg.confirmDelete}" 
+                     width="200"  
+                     header="#{msg.confirm}" 
+                     severity="alert" 
+                     widgetVar="confirmDelete">  
+        <p:commandButton value="#{msg.yes}" 
+                         update=":formCadastroProjetos:tabEquipeMatrizDI" 
+                         actionListener="#{cadProjeto.deleteMember}" 
+                         oncomplete="confirmDelete.hide()"/>  
+        <p:commandButton value="#{msg.no}"                              
+                         oncomplete="confirmDelete.hide()"
+                         actionListener="#{cadProjeto.newMember()}" />  
+    </p:confirmDialog> 
+
+</ui:composition>

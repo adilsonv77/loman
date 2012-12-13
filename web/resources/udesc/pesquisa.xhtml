@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="cad" required="true" />
+        <composite:attribute name="title" />
+        <composite:attribute name="filterIndex" />
+        <composite:attribute name="width" default="400" />
+        <composite:attribute name="height" default="360" />
+        <composite:attribute name="update" default=":form" />
+        <composite:attribute name="form" default="form" />
+        <composite:attribute name="idComponent" default="udescPesq"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:form id="formPesquisa">
+            <p:dialog widgetVar="pesquisar" modal="true" header="#{cc.attrs.title}" width="#{cc.attrs.width}" 
+                      height="#{cc.attrs.height}" resizable="false">
+
+                <h:panelGroup>
+                    <h:outputText value="#{msg.filter}"/>
+                    <f:verbatim>&amp;nbsp;&amp;nbsp;</f:verbatim>
+                    <p:inputText value= "#{cc.attrs.cad.filtro}" size="30">
+                        <p:ajax event="keyup" update=":#{cc.attrs.idComponent}:formPesquisa:tabelaPesquisa"/>
+                    </p:inputText>
+
+                </h:panelGroup>
+                <p:dataTable  value="#{cc.attrs.cad.registrosPesquisados}" var="r" paginator="true"
+                                                             selectionMode="single" 
+                                                             selection="#{cc.attrs.cad.registroSelec}"
+                                                             id="tabelaPesquisa"
+                                                             binding="#{cc.attrs.cad.dataTable}"
+                                                             rows="10"
+                                                             paginatorPosition="bottom"
+                                                             rowKey="#{r.id}">
+                    
+                    <f:attribute name="form" value="#{cc.attrs.form}" />
+                    
+                    <p:ajax event="rowSelect" 
+                            onsuccess="pesquisar.hide();" 
+                            update="#{cc.attrs.update}"
+                            listener="#{cc.attrs.cad.onRowSelect}"/>
+
+                    <p:columns value="#{cc.attrs.cad.colunas}" var="col" columnIndexVar="colIndex" >
+                        <f:facet name="header">
+                            <h:outputText value="#{msg[col]}"/>
+                        </f:facet>
+                        <h:outputText value="#{r[col]}"/>
+                    </p:columns>
+
+                </p:dataTable>
+            </p:dialog>
+
+
+        </h:form>
+
+    </composite:implementation>
+
+</html>
+

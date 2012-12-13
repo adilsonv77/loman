@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog id="dialogDisponibilizarUnidade" 
+              header="#{msg.selectedUnit}" 
+              widgetVar="dialogDisponibilizarUnidade" 
+              resizable="false"
+              modal="true"
+              width="800">  
+        <h:panelGrid columns="2">                          
+            <h:outputText value="#{msg.name}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.nome}"/> 
+
+            <h:outputText value="#{msg.description}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.descricao}"/>
+
+            <h:outputText value="#{msg.duration}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.duracao} horas"/>
+
+            <h:outputText value="#{msg.coordinator}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.projeto.coordenador.nome}"/>
+
+            <h:outputText value="#{msg.observation}: "/>
+            <p:inputTextarea id="taObservacaoUnidade"
+                             value="#{cadUnidade.selecOcorrencia.observacao}"
+                             widgetVar="taObservacaoUnidade"
+                             style="width:600px;height:50px;"
+                             maxlength="200"
+                             cols="50"
+                             immediate="true"
+                             rows="4"
+                             autoResize="false">
+                <p:ajax process="taObservacaoUnidade" 
+                        event="blur"/>
+            </p:inputTextarea> 
+        </h:panelGrid>  
+
+        <p:fileUpload fileUploadListener="#{cadUnidade.handleFileUpload}"
+                      mode="advanced"
+                      update=":messages
+                      :formDisponibilizarUnidade"
+                      sizeLimit="10000000"                               
+                      label="#{msg.choice}"
+                      uploadLabel="#{msg.upload}"
+                      cancelLabel="#{msg.cancel}"/>
+    </p:dialog>
+
+</ui:composition>

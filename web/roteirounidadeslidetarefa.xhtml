@@ -1,0 +1,32 @@
+<ui:composition  xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:f="http://java.sun.com/jsf/core"                 
+                 xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog header="#{msg.guide}" 
+              widgetVar="dialogUnidadeSlideTarefa"               
+              modal="true" 
+              height="550" 
+              width="900" 
+              style="z-index: 100;"
+              resizable="false"
+              id="dialogUnidadeId">        
+
+        <p:tabView id="tabUnidadeSlideTarefa" onTabShow="mapa()" widgetVar="tabUnidadeSlideTarefaWV">
+            
+            <p:tab id="abaUnidade"
+                   title="#{msg.unit}" >
+                <ui:include src="roteiroformunidade.xhtml"/>
+            </p:tab>
+            <p:tab id="abaSlide"
+                   title="#{msg.slides}">
+                <ui:include src="roteiroformslide.xhtml"/>                
+            </p:tab>            
+            <p:tab id="abaMindmap"
+                   title="#{msg.mindmap}" rendered="#{cadUsuario.verificarUsuarioProfessorConteudista()}">
+                <ui:include src="mapaconceitual.xhtml"/>
+            </p:tab>
+        </p:tabView>                 
+    </p:dialog>
+</ui:composition>

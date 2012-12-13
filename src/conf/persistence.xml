@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="loman" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>br.udesc.loman.modelo.Atividade</class>
+    <class>br.udesc.loman.modelo.Conteudo</class>
+    <class>br.udesc.loman.modelo.FormaAvaliacao</class>
+    <class>br.udesc.loman.modelo.Material</class>
+    <class>br.udesc.loman.modelo.MembroEquipe</class>
+    <class>br.udesc.loman.modelo.Objetivo</class>
+    <class>br.udesc.loman.modelo.Ocorrencia</class>
+    <class>br.udesc.loman.modelo.Papel</class>
+    <class>br.udesc.loman.modelo.Projeto</class>
+    <class>br.udesc.loman.modelo.Roteiro</class>
+    <class>br.udesc.loman.modelo.Slide</class>
+    <class>br.udesc.loman.modelo.Tarefa</class>
+    <class>br.udesc.loman.modelo.Unidade</class>
+    <class>br.udesc.loman.modelo.Usuario</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/oas"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="loman_2" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>br.udesc.loman.modelo.MembroEquipe</class>
+    <class>br.udesc.loman.modelo.Papel</class>
+    <class>br.udesc.loman.modelo.Projeto</class>
+    <class>br.udesc.loman.modelo.Roteiro</class>
+    <class>br.udesc.loman.modelo.Slide</class>
+    <class>br.udesc.loman.modelo.Tarefa</class>
+    <class>br.udesc.loman.modelo.Unidade</class>
+    <class>br.udesc.loman.modelo.Usuario</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://200.135.112.124:3306/sasi"/>
+      <property name="javax.persistence.jdbc.password" value="*&amp;u@mophp*"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="sasi"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
+  </persistence-unit>
+</persistence>

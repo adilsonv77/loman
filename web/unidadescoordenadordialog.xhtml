@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog id="dialogUnidadesCoordenador" 
+              header="#{msg.units}" 
+              widgetVar="dialogUnidadesCoordenador" 
+              resizable="false"
+              modal="true"
+              width="800">
+
+        <p:dataTable emptyMessage="#{msg.noUnitsFound}" 
+                     value="#{cadUnidade.unidadesCoordenador}"
+                     var="unidade"
+                     paginator="true"
+                     paginatorPosition="top"
+                     rows="10"  
+                     paginatorTemplate="{CurrentPageReport}  
+                     {FirstPageLink} 
+                     {PreviousPageLink} 
+                     {PageLinks} 
+                     {NextPageLink} 
+                     {LastPageLink} 
+                     {RowsPerPageDropdown}">                                        
+            <p:column sortBy="#{unidade.nome}"
+                      style="width: 40%">
+                <f:facet name="header">
+                    #{msg.unit}
+                </f:facet>
+                <h:outputText value="#{unidade.nome}"/>
+            </p:column>
+            <p:column sortBy="#{unidade.projeto.titulo}"
+                      style="width: 60%">
+                <f:facet name="header">
+                    #{msg.project}
+                </f:facet>
+                <h:outputText value="#{unidade.projeto.titulo}"/>
+            </p:column>
+        </p:dataTable>
+    </p:dialog>  
+
+</ui:composition>

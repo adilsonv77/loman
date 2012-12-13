@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc"
+                template="template.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="corpo">
+        <p:dialog widgetVar="dialogLogin" 
+                  header="#{msg.loginUsuario}"
+                  resizable="false" 
+                  closable="false"
+                  minimizable="false"
+                  draggable="false"
+                  modal="true"
+                  visible="#{cadUsuario.getUsuarioSessao() == null}"
+                  rendered="#{cadUsuario.getUsuarioSessao() == null}">
+            <h:form id="formLogin">
+                <h:panelGrid columns="2" 
+                             id="panelLoginUsuario"
+                             cellspacing="5">
+                    <h:outputText value="#{msg.nick}: "/>
+                    <p:inputText id="nick" 
+                                 required="true"
+                                 requiredMessage="#{msg.userNameRequiredErrorMessage}"
+                                 value="#{cadUsuario.registro.nick}" 
+                                 size="30" 
+                                 maxlength="30"/>
+                    <h:outputText value="#{msg.password}: "/>
+                    <p:password id="senha" 
+                                required="true"
+                                requiredMessage="#{msg.userPasswordRequiredErrorMessage}"
+                                value="#{cadUsuario.registro.senha}"
+                                size="30" 
+                                maxlength="20"
+                                feedback="false"/>
+                </h:panelGrid>
+                <h:panelGrid columns="2" id="panelLoginActions">
+                    <p:commandButton icon="ui-icon-unlocked"
+                                     value="#{msg.entrar}"
+                                     style="float: left;"
+                                     ajax="false"
+                                     actionListener="#{cadUsuario.login()}" 
+                                     update=":formLogin"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog id="dialogRevisarUnidade" 
+              header="#{msg.reviewUnit}" 
+              widgetVar="dialogRevisarUnidade" 
+              resizable="false"
+              modal="true"
+              width="800">  
+        <h:panelGrid columns="2">                          
+            <h:outputText value="#{msg.title}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.nome}"/> 
+
+            <h:outputText value="#{msg.description}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.descricao}"/>
+
+            <h:outputText value="#{msg.duration}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.duracao} horas"/>
+            
+            <h:outputText value="#{msg.coordinator}: "/>
+            <h:outputText value="#{cadUnidade.selecUnidade.projeto.coordenador.nome}"/>
+            
+        </h:panelGrid> 
+
+        <p:fieldset legend="#{msg.material}">
+            <p:dataTable id="MateriaisUnidade"                                      
+                         emptyMessage="#{msg.noMaterialsFound}" 
+                         value="#{cadUnidade.ocorrenciasUnidadeComMaterial}"
+                         var="ocorrencia"
+                         paginator="true"
+                         paginatorPosition="top"
+                         rows="10"
+                         paginatorTemplate="{CurrentPageReport}  
+                         {FirstPageLink} 
+                         {PreviousPageLink} 
+                         {PageLinks} 
+                         {NextPageLink} 
+                         {LastPageLink} 
+                         {RowsPerPageDropdown}">
+                <p:column sortBy="#{ocorrencia.usuario.nome}"
+                          style="width: 25%">
+                    <f:facet name="header">
+                        #{msg.user}
+                    </f:facet>
+                    <h:outputText value="#{ocorrencia.usuario.nome}"/>
+                </p:column>
+                <p:column sortBy="#{ocorrencia.dataModificacao}"
+                          style="width: 25%">
+                    <f:facet name="header">
+                        #{msg.dataModificacao}
+                    </f:facet>
+                    <h:outputText value="#{cadUnidade.formatarDataOcorrencia(ocorrencia)}"/>
+                </p:column>                        
+                <p:column>                                  
+                    <f:facet name="header">
+                        #{msg.observation}
+                    </f:facet>
+                    <h:outputText value="#{ocorrencia.observacao}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        #{msg.archive}
+                    </f:facet>
+                    <h:outputText value="#{cadUnidade.formatarNomeArquivo(ocorrencia)}"/>
+                </p:column>
+                <p:column>
+                    <p:commandLink id="downloadLinkUnidade" 
+                                   value="Download"
+                                   actionListener="#{cadUnidade.dowloadMaterial(ocorrencia)}"
+                                   ajax="false">                                
+                        <p:fileDownload value="#{cadUnidade.file}" />  
+                    </p:commandLink> 
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
+    </p:dialog>    
+
+</ui:composition>

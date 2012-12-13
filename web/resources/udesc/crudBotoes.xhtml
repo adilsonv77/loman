@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+    
+    <composite:interface>
+        <composite:attribute name="cad" required="true" />
+        <composite:attribute name="update" default=":form :messages" />
+    </composite:interface>
+    
+    <composite:implementation>
+    
+            <p:commandButton value="#{msg.record}" 
+                             actionListener="#{cc.attrs.cad.salvar}" 
+                             rendered="#{cc.attrs.cad.registro.id == 0}" 
+                             update="#{cc.attrs.update}"/>
+
+            <p:commandButton value="#{msg.alter}" 
+                             actionListener="#{cc.attrs.cad.salvar}" 
+                             rendered="#{cc.attrs.cad.registro.id != 0}" 
+                             update="#{cc.attrs.update}"/>
+
+            <p:commandButton value="#{msg.delete}" 
+                             rendered="#{cc.attrs.cad.registro.id != 0}"
+                             onclick="confirmDelete.show()"/>
+
+            <p:commandButton actionListener="#{cc.attrs.cad.novo}" 
+                             value="#{msg.newValue}" 
+                             update="#{cc.attrs.update}"/>
+
+    </composite:implementation>
+    
+    
+</html>

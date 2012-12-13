@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog id="dialogTramitarTarefa" 
+              header="#{msg.proceedingTask}" 
+              widgetVar="dialogTramitarTarefa" 
+              resizable="false"
+              modal="true"
+              width="800">
+
+        <h:panelGrid columns="2">
+            <h:outputText value="#{msg.title}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.titulo}"/> 
+
+            <h:outputText value="#{msg.description}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.descricao}"/>
+
+            <h:outputText value="#{msg.dataEntrega}: "/>
+            <p:calendar value="#{cadTarefa.selecTarefa.dataEntrega}"
+                        locale="pt_BR"
+                        disabled="true"/>
+
+            <h:outputText value="#{msg.user}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.usuario.nome}"/>
+
+            <h:outputText value="#{msg.type}: "/>
+            <h:outputText value="#{cadTarefa.selecTarefa.papelEnum.toString()}"/>
+
+            <h:outputText value="#{msg.statusOfRevision}: "/>
+            <p:selectOneRadio id="tarefaStatus"
+                              value="#{cadTarefa.copiaStatus}"
+                              required="true">
+                <f:selectItem itemLabel="Com Problemas"
+                              itemValue="COM_PROBLEMAS"/>                
+                <f:selectItem itemLabel="Concluída"
+                              itemValue="CONCLUIDA"/>
+            </p:selectOneRadio> 
+            
+            <h:outputText value="#{msg.observation}: "/>
+            <p:inputTextarea id="taObservacaoTramite"
+                             value="#{cadTarefa.selecOcorrencia.observacao}"                                 
+                             widgetVar="taObservacaoTramite"
+                             style="width:600px;height:50px;"
+                             maxlength="200"
+                             cols="50"
+                             immediate="true"
+                             rows="4"
+                             autoResize="false">
+                <p:ajax process="taObservacaoTramite" 
+                        event="blur"/>
+            </p:inputTextarea> 
+        </h:panelGrid>
+        <h:panelGrid columns="2">
+            <p:commandButton value="#{msg.record}"
+                             update=":formTramitarTarefa
+                             :messages"                                     
+                             oncomplete="dialogTramitarTarefa.hide()"
+                             actionListener="#{cadTarefa.tramiteTarefa()}"/>
+            <p:commandButton value="#{msg.cancel}"
+                             oncomplete="dialogTramitarTarefa.hide()"/>
+        </h:panelGrid>
+    </p:dialog> 
+
+</ui:composition>

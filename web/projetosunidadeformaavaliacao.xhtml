@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <h:panelGrid columns="1">
+        <h:panelGrid columns="2">
+            <h:outputText value="#{msg.description}: "/>        
+            <h:outputText/>                
+            <p:inputTextarea id="taFormaAvaliacao"
+                             value="#{cadProjeto.selecFormaAvaliacao.descricao}"
+                             style="width:700px;height:50px;"                                 
+                             maxlength="200"
+                             cols="50"
+                             rows="4"
+                             autoResize="false"/>
+            <p:message for="taFormaAvaliacao"/>
+        </h:panelGrid>
+        <h:panelGrid columns="3">
+            <p:commandButton actionListener="#{cadProjeto.addFormaAvaliacao()}" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao
+                             :messages"
+                             value="#{msg.add}"
+                             rendered="#{cadProjeto.alterarFormaAvaliacao == false}"/>                                
+            <p:commandButton actionListener="#{cadProjeto.alterarFormaAvaliacao()}"  
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao
+                             :messages"
+                             value="#{msg.alter}"
+                             rendered="#{cadProjeto.alterarFormaAvaliacao == true}"/>             
+            <p:commandButton actionListener="#{cadProjeto.novaFormaAvaliacao()}"  
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             value="#{msg.newValue}"/>
+        </h:panelGrid>
+    </h:panelGrid>   
+
+    <p:dataTable emptyMessage="#{msg.noAssessmentFormsFound}" 
+                 value="#{cadProjeto.selecUnidade.formasAvaliacao}"
+                 var="formaAvaliacao"
+                 paginator="true"
+                 paginatorPosition="top"
+                 rows="3"  
+                 paginatorTemplate="{CurrentPageReport}  
+                 {FirstPageLink} 
+                 {PreviousPageLink} 
+                 {PageLinks} 
+                 {NextPageLink} 
+                 {LastPageLink} 
+                 {RowsPerPageDropdown}">
+        <p:column style="max-width: 450px; width: 650px;">
+            <f:facet name="header">
+                #{msg.assessmentForms}
+            </f:facet>
+            <h:outputText value="#{formaAvaliacao.descricao}"/>
+        </p:column>
+        <p:column>
+            <p:commandButton icon="ui-icon ui-icon-pencil" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             title="#{msg.alter}">
+                <f:setPropertyActionListener value="#{formaAvaliacao}"
+                                             target="#{cadProjeto.selecFormaAvaliacao}" />
+            </p:commandButton>
+            <p:commandButton icon="ui-icon ui-icon-close" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             title="#{msg.delete}"
+                             oncomplete="confirmDeleteFormaAvaliacao.show()">
+                <f:setPropertyActionListener value="#{formaAvaliacao}"
+                                             target="#{cadProjeto.selecFormaAvaliacao}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+
+</ui:composition>

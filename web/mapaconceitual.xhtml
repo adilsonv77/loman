@@ -1,0 +1,83 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:f="http://java.sun.com/jsf/core">        
+
+    <script type="text/javascript" src="dwr/engine.js"></script>
+    <script type="text/javascript" src="/loman/dwr/util.js"></script>
+    <script type="text/javascript" src="dwr/interface/mapaConceitual.js"></script>            
+    <script type="text/javascript" src="resources/js/jsapi.js"></script>
+    <script type="text/javascript" src="resources/js/format+pt_BR,default.js"></script>
+    <script type="text/javascript" src="resources/js/network.js"></script>
+    <script type="text/javascript" src="resources/js/network-min.js"></script>
+    <script type="text/javascript" src="resources/js/mapa_conceitual.js"></script>
+    <script type="text/javascript" src="resources/js/funcoes_nodos.js"></script>
+    <script type="text/javascript" src="resources/js/funcoes_relacoes.js"></script>
+    <script type="text/javascript" src="resources/js/funcoes_conteudos.js"></script>
+
+    <script type="text/javascript">
+        var nodesTable = null;
+        var linksTable = null;
+        var network = null;       
+        var options = null;
+        var origem = null;
+        //Variáveis de controle
+        var sel = undefined;
+        var id = 0;        
+        //**
+        //Listas de conteúdos        
+        var listaConteudosId = {};
+        var listaConteudosDescricao = {};            
+        //**
+        //Listas de arestas
+        var listaArestaConteudoId = {};
+        var listaArestaRelacaoId = {};
+        //**
+        //Lista de Relações
+        var listaRelacoesId = {};
+        var listaRelacoesDescricao = {};
+        //**
+        
+        function inicializarMapa(){
+            google.load('visualization', '1'); 
+            dwr.engine.setNotifyServerOnPageUnload(true, true); 
+            dwr.engine.setErrorHandler(null); 
+            dwr.engine.setAsync(false);
+            draw();
+        }        
+    </script>
+
+    <h:form id="formMapaConceitual">
+        <p:toolbar>  
+            <p:toolbarGroup align="left"> 
+                <p:commandButton icon="ui-icon-lightbulb" 
+                                 value="#{msg.content}"
+                                 id="btn_conteudo"
+                                 oncomplete="dialogConteudos.show()" 
+                                 update=":tabUnidadeSlideTarefa:formMapaConceitual:tabelaConteudos"/> 
+                <p:separator />    
+                <p:commandButton id="btn_relacao" 
+                                 icon="ui-icon-arrowrefresh-1-w" 
+                                 value="#{msg.relationship}" 
+                                 onclick="javascript: try{relacionar();} catch (e){alert(e);}; return false;"/>               
+                <p:commandButton id="btn_cancelar" 
+                                 icon="ui-icon-cancel"
+                                 onclick="javascript: try{cancelar();} catch (e){alert(e);}; return false;"/>  
+                <p:separator />                                 
+                <p:commandButton id="btn_editar" 
+                                 icon="ui-icon-pencil"                                 
+                                 onstart="return editarNodo()"
+                                 update=":tabUnidadeSlideTarefa:formMapaConceitual:painelRelacao">
+                </p:commandButton>  
+                <p:commandButton id="btn_excluir"
+                                 icon="ui-icon-close" 
+                                 onclick="javascript: try{excluirNodo();} catch (e){alert(e);}; return false;"/>                 
+            </p:toolbarGroup>  
+        </p:toolbar>        
+
+        <div id="mynetwork"></div>
+        <ui:include src="mapaconceitualdialogs.xhtml"/>
+    </h:form>      
+
+</ui:composition>

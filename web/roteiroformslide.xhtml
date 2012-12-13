@@ -1,0 +1,98 @@
+<ui:composition  xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:f="http://java.sun.com/jsf/core"                 
+                 xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <h:panelGrid columns="2">
+        <h:form id="formCadastroSlide">
+            <h:panelGrid columns="1"
+                         cellspacing="5" cellpadding="5">
+                <h:panelGrid columns="2">            
+                    <h:outputText value="#{msg.title}:"/>
+                    <p:inputText id="tituloSlide"
+                                 value="#{cadRoteiro.selecSlide.titulo}" 
+                                 maxlength="50"                                     
+                                 size="60">
+                        <f:validateLength maximum="50"/>
+                    </p:inputText>                                       
+                </h:panelGrid>
+                <p:editor id="editorSlide"
+                          widgetVar="editorDoSlide"                  
+                          value="#{cadRoteiro.selecSlide.descricao}" 
+                          width="400"
+                          height="300"/> 
+                <h:panelGrid columns="2">
+                    <p:commandButton id="addSlide" 
+                                     value="#{msg.add}"                                       
+                                     rendered="#{cadRoteiro.alterandoSlide == false}"
+                                     action="#{cadRoteiro.addSlide()}"
+                                     update=":tabUnidadeSlideTarefa:formCadastroSlide
+                                     :tabUnidadeSlideTarefa:formTabelaSlides
+                                     :messages">                                            
+                    </p:commandButton>
+                    <p:commandButton id="alterSlide" 
+                                     value="#{msg.alter}"                        
+                                     rendered="#{cadRoteiro.alterandoSlide == true}"
+                                     action="#{cadRoteiro.alterarSlide()}"
+                                     update=":tabUnidadeSlideTarefa:formCadastroSlide
+                                     :tabUnidadeSlideTarefa:formTabelaSlides
+                                     :messages">                    
+                    </p:commandButton>
+                    <p:commandButton value="#{msg.newValue}"
+                                     actionListener="#{cadRoteiro.novoSlide()}"
+                                     update=":tabUnidadeSlideTarefa:formCadastroSlide
+                                     :tabUnidadeSlideTarefa:formTabelaSlides"/>
+                </h:panelGrid>
+            </h:panelGrid>
+        </h:form>
+        <h:form id="formTabelaSlides">
+            <p:dataTable id="roteiroSlides"
+                         rowKey="#{slide.titulo}"
+                         emptyMessage="#{msg.noSlidesFound}" 
+                         value="#{cadRoteiro.registro.slides}"
+                         var="slide"                               
+                         pageLinks="3"
+                         rowIndexVar="linha"
+                         style="max-width: 400px; 
+                         min-width: 200px;
+                         width: 400px;">                
+                <p:column>
+                    <f:facet name="header">
+                        #
+                    </f:facet>
+                    <h:outputText value="#{linha+1}"/>
+                </p:column>
+                <p:column style="max-width: 260px;">
+                    <f:facet name="header">
+                        #{msg.slides}
+                    </f:facet>
+                    <h:outputText value="#{slide.titulo}"/>
+                </p:column>                  
+                <p:column>
+                    <p:commandButton icon="ui-icon-note"
+                                     actionListener="#{cadRoteiro.novaTarefa()}"
+                                     oncomplete="dialogTarefa.show()"
+                                     update=":tabUnidadeSlideTarefa:formCadastroTarefas
+                                     :tabUnidadeSlideTarefa:formTabelaTarefas:roteiroTarefas">
+                        <f:setPropertyActionListener value="#{slide}"
+                                                     target="#{cadRoteiro.selecSlide}"/>
+                    </p:commandButton>      
+                    <p:commandButton icon="ui-icon ui-icon-pencil"
+                                     actionListener="#{cadRoteiro.alteraSlide()}"
+                                     update=":tabUnidadeSlideTarefa:formCadastroSlide">
+                        <f:setPropertyActionListener value="#{slide}"
+                                                     target="#{cadRoteiro.selecSlide}"/>
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon ui-icon-close"                                     
+                                     oncomplete="confirmDeleteSlide.show()"
+                                     process="@this">  
+                        <f:setPropertyActionListener value="#{slide}"
+                                                     target="#{cadRoteiro.selecSlide}"/>
+                    </p:commandButton>                   
+                </p:column>
+            </p:dataTable>
+        </h:form>        
+    </h:panelGrid>  
+    <ui:include src="roteirodialogtarefa.xhtml"/>  
+</ui:composition>

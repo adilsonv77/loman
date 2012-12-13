@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">                         
+
+    <!--        Dialog Delete Objetivo        -->
+    <p:confirmDialog message="#{msg.confirmDelete}" 
+                     width="200"
+                     header="#{msg.confirm}"
+                     severity="alert"
+                     widgetVar="confirmDeleteObjetivo">  
+        <p:commandButton value="#{msg.yes}"                              
+                         actionListener="#{cadProjeto.deleteObjetivo()}" 
+                         oncomplete="confirmDeleteObjetivo.hide()"
+                         update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"/>  
+        <p:commandButton value="#{msg.no}" 
+                         oncomplete="confirmDeleteObjetivo.hide()"
+                         actionListener="#{cadProjeto.novoObjetivo()}" />  
+    </p:confirmDialog>
+
+    <!--        Dialog Delete Conteudo        -->
+    <p:confirmDialog message="#{msg.confirmDelete}" 
+                     width="200"
+                     header="Confirm"
+                     severity="alert" 
+                     widgetVar="confirmDeleteConteudo">  
+        <p:commandButton value="#{msg.yes}"                              
+                         actionListener="#{cadProjeto.deleteConteudo()}" 
+                         oncomplete="confirmDeleteConteudo.hide()"
+                         update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"/>  
+        <p:commandButton value="#{msg.no}" 
+                         oncomplete="confirmDeleteConteudo.hide()"
+                         actionListener="#{cadProjeto.novoConteudo()}"/>  
+    </p:confirmDialog>
+
+    <!--        Dialog Delete Atividade        -->
+    <p:confirmDialog message="#{msg.confirmDelete}" 
+                     width="200"
+                     header="Confirm"
+                     severity="alert"
+                     widgetVar="confirmDeleteAtividade">  
+        <p:commandButton value="#{msg.yes}"                              
+                         actionListener="#{cadProjeto.deleteAtividade()}"
+                         oncomplete="confirmDeleteAtividade.hide()"
+                         update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"/>  
+        <p:commandButton value="#{msg.no}" 
+                         oncomplete="confirmDeleteAtividade.hide()"
+                         actionListener="#{cadProjeto.novaAtividade()}"/>  
+    </p:confirmDialog>
+
+    <!--        Dialog Delete Forma de Avaliação        -->
+    <p:confirmDialog message="#{msg.confirmDelete}" 
+                     width="200"
+                     header="Confirm"
+                     severity="alert"
+                     widgetVar="confirmDeleteFormaAvaliacao">  
+        <p:commandButton value="#{msg.yes}"                              
+                         actionListener="#{cadProjeto.deleteFormaAvaliacao()}" 
+                         oncomplete="confirmDeleteFormaAvaliacao.hide()"
+                         update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"/>  
+        <p:commandButton value="#{msg.no}" 
+                         oncomplete="confirmDeleteFormaAvaliacao.hide()"
+                         actionListener="#{cadProjeto.novaFormaAvaliacao()}" />  
+    </p:confirmDialog>
+    <br/>
+    <p:dataTable emptyMessage="#{msg.noUnitsFound}" 
+                 value="#{cadProjeto.registro.unidades}"
+                 var="unid"
+                 rowIndexVar="linha">
+        <f:facet name="header">
+            <p:commandButton icon="ui-icon-document"
+                             value="#{msg.newUnit}"
+                             actionListener="#{cadProjeto.novaUnid()}"       
+                             style="float: left;"
+                             oncomplete="dialogCadastroUnidade.show()"
+                             update=":formCadastroProjetos"/>
+        </f:facet>           
+        <p:column>
+            <f:facet name="header">
+                #
+            </f:facet>
+            <h:outputText value="#{linha+1}"/>
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                #{msg.description}
+            </f:facet>
+            <h:outputText value="#{unid.nome}"/>
+        </p:column>            
+        <p:column>
+            <f:facet name="header">
+                #{msg.objectives}
+            </f:facet>
+            <p:dataList value="#{unid.objetivos}" 
+                        var="objetivo" type="ordered">  
+                #{objetivo.descricao}  
+            </p:dataList>
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                #{msg.contents}
+            </f:facet>
+            <p:dataList value="#{unid.conteudos}" 
+                        var="conteudo" type="ordered">  
+                #{conteudo.descricao}  
+            </p:dataList>
+        </p:column>        
+        <p:column>
+            <f:facet name="header">
+                #{msg.activities}
+            </f:facet>
+            <p:dataList value="#{unid.atividades}" 
+                        var="atividade" type="ordered">  
+                #{atividade.descricao}  
+            </p:dataList>
+        </p:column>        
+
+        <p:column>
+            <f:facet name="header">
+                #{msg.assessmentForms}
+            </f:facet>
+            <p:dataList value="#{unid.formasAvaliacao}" 
+                        var="formaAvaliacao" type="ordered">  
+                #{formaAvaliacao.descricao}  
+            </p:dataList>
+        </p:column>        
+        <p:column>
+            <p:commandButton icon="ui-icon ui-icon-pencil"                                  
+                             title="#{msg.alter}"
+                             oncomplete="dialogCadastroUnidade.show();"
+                             update=":formCadastroProjetos">
+                <f:setPropertyActionListener value="#{unid}" 
+                                             target="#{cadProjeto.selecUnidade}" />
+            </p:commandButton>
+            <p:commandButton icon="ui-icon ui-icon-close"
+                             title="#{msg.delete}"
+                             oncomplete="confirmDeleteUnid.show()">
+                <f:setPropertyActionListener value="#{unid}"
+                                             target="#{cadProjeto.selecUnidade}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+
+    <!--        CONFIRM DELETE UNIDADE-->
+    <br/>
+    <p:confirmDialog message="#{msg.confirmDelete}" 
+                     width="200"  
+                     header="Confirm"
+                     severity="alert"
+                     widgetVar="confirmDeleteUnid">  
+        <p:commandButton value="#{msg.yes}"                             
+                         actionListener="#{cadProjeto.deleteUnidade}"
+                         oncomplete="confirmDeleteUnid.hide()"  
+                         update=":formCadastroProjetos:tabEquipeMatrizDI"/>
+        <p:commandButton value="#{msg.no}"
+                         oncomplete="confirmDeleteUnid.hide()"
+                         actionListener="#{cadProjeto.novaUnid()}"/>  
+    </p:confirmDialog> 
+    
+</ui:composition>

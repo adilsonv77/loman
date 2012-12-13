@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog header="#{msg.newUnit}" 
+              widgetVar="dialogCadastroUnidade"               
+              modal="true" 
+              height="550" 
+              width="800" 
+              resizable="false">  
+
+        <h:panelGrid columns="2"
+                     id="camposUnidade">
+            <h:outputText value="#{msg.nome} : "/>
+            <p:inputText value="#{cadProjeto.selecUnidade.nome}" 
+                         maxlength="50"
+                         size="60"/>
+            <h:outputText value="#{msg.duration} : "/>
+            <h:panelGrid columns="2">                            
+                <p:inputText value="#{cadProjeto.selecUnidade.duracao}"
+                             size="5"/>
+                <h:outputText value=" mins"/>
+            </h:panelGrid>
+
+            <h:outputText value="#{msg.description} : "/>
+            <p:inputTextarea value="#{cadProjeto.selecUnidade.descricao}"  
+                             style="width:650px;height:50px;"                                                          
+                             maxlength="200" 
+                             cols="50" 
+                             rows="4"
+                             autoResize="false"/>
+        </h:panelGrid>                         
+        <p:tabView id="tabObjetivoConteudoAtividadeFormaDeAvaliacao">
+            <p:tab title="#{msg.objectives}">
+                <ui:include src="projetosunidadeobjetivos.xhtml"/>                
+            </p:tab>
+            <p:tab title="#{msg.contents}">
+                <ui:include src="projetosunidadeconteudos.xhtml"/>
+            </p:tab>
+            <p:tab title="#{msg.activities}">
+                <ui:include src="projetosunidadeatividades.xhtml"/>
+            </p:tab>
+            <p:tab title="#{msg.assessmentForms}">
+                <ui:include src="projetosunidadeformaavaliacao.xhtml"/>
+            </p:tab>
+        </p:tabView> 
+        <p:panel>
+            <p:commandButton value="#{msg.record}"  
+                             rendered="#{cadProjeto.ultAcaoIncluir == true}"                          
+                             actionListener="#{cadProjeto.addUnidade}"
+                             update=":formCadastroProjetos
+                             :messages"
+                             oncomplete="dialogCadastroUnidade.hide()"/>                         
+            <p:commandButton value="#{msg.alter}"  
+                             rendered="#{cadProjeto.ultAcaoIncluir == false}"                          
+                             oncomplete="dialogCadastroUnidade.hide();"
+                             actionListener="#{cadProjeto.updateUnidade}"
+                             update=":formCadastroProjetos"/>
+            <p:commandButton value="#{msg.cancel}" 
+                             onclick="dialogCadastroUnidade.hide();" 
+                             type="button"/>    
+        </p:panel>
+    </p:dialog>
+
+</ui:composition> 

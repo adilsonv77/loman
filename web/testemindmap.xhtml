@@ -1,0 +1,75 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:f="http://java.sun.com/jsf/core">
+    <!--    <ui:define name="corpo">-->
+    <style>
+        body {
+            font: 10pt arial; 
+        }
+    </style>
+
+    <script type="text/javascript">
+        var nodesTable = null;
+        var linksTable = null;
+        var network = null;            
+      
+
+        google.load('visualization', '1');
+      
+        // Set callback to run when API is loaded
+        google.setOnLoadCallback(draw);
+
+        var id = 0;
+
+        // Called when the Visualization API is loaded.
+        function draw() {
+            // Create and populate a data table.
+            nodesTable = new google.visualization.DataTable();
+            nodesTable.addColumn('number', 'id');
+            nodesTable.addColumn('string', 'style');
+            nodesTable.addColumn('string', 'text');
+            nodesTable.addRow([id, 'circle' ,'0']);
+            id++;
+            nodesTable.addRow([id, 'circle' ,'0']);
+            id++;
+            nodesTable.addRow([id, 'circle' ,'0']);
+            id++;
+            nodesTable.addRow([id, 'circle' ,'0']);                        
+        
+            // specify options
+            var options = {
+                'width': '600px',
+                'height': '400px',
+                'stabilize': false
+            };
+
+            // Instantiate our graph object.
+            network = new links.Network(document.getElementById('mynetwork'));
+            
+            // Add event listeners
+            google.visualization.events.addListener(network, 'select', onselect);
+
+            // Draw our graph with the created data and options 
+            network.draw(nodesTable, options);    
+        }
+        var id = 3;
+        
+        function add(){
+            draw();
+        }
+      
+    </script>
+
+    <form>
+        <input type="submit" value="Draw" onclick="javascript: try{add();} catch (e){alert(e);}; return false;"/>        
+    </form>
+
+    <div id="mynetwork"></div>
+
+    <div id="info"></div>
+
+    <!--    </ui:define> -->
+
+</ui:composition>

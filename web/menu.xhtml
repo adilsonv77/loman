@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <f:loadBundle basename="Messages" var="msg"/>
+    <h:form id="formMenu">        
+        <p:menubar rendered="#{cadUsuario.usuarioSessao!=null}" >
+            <p:submenu label="#{msg.admin}" rendered="#{cadUsuario.verificarUsuarioAdministrador()}">
+                <p:menuitem ajax="false" value="#{msg.users}" action="#{cadUsuario.novoUsuario}"/>                                               
+            </p:submenu>
+            <p:submenu label="#{msg.projects}">
+                <p:menuitem ajax="false" value="#{msg.registerProjects}" action="#{cadProjeto.novoProjeto}"/> 
+                <p:menuitem ajax="false" value="#{msg.registerScript}" action="#{cadRoteiro.novoRoteiro}" rendered="#{cadUsuario.verificarUsuarioCoordenadorOuProfessorConteudista()}"/>                
+            </p:submenu>            
+            <p:submenu label="#{msg.task}" rendered="#{cadUsuario.verificarUsuarioProgramadorOuDesignerOuCoordenador()}">
+                <p:menuitem ajax="false" value="#{msg.taskAssume}" action="#{cadTarefa.assumirTarefa()}" rendered="#{cadUsuario.verificarUsuarioProgramadorOuDesigner()}"/>
+                <p:menuitem ajax="false" value="#{msg.contentAvailable}" action="#{cadTarefa.disponibilizarMaterial()}" rendered="#{cadUsuario.verificarUsuarioProgramadorOuDesigner()}"/>
+                <p:menuitem ajax="false" value="#{msg.reviewTasks}" action="#{cadTarefa.revisarTarefa()}" rendered="#{cadUsuario.verificarUsuarioCoordenador()}"/>                
+                <p:menuitem ajax="false" value="#{msg.proceedingTasks}" action="#{cadTarefa.tramitarTarefa()}" rendered="#{cadUsuario.verificarUsuarioCoordenador()}"/>                
+            </p:submenu>
+            <p:submenu label="#{msg.unit}" rendered="#{cadUsuario.verificarUsuarioCoordenadorOuProfessorConteudista()}">
+                <p:menuitem ajax="false" value="#{msg.contentAvailable}" action="#{cadUnidade.disponibilizarMaterial()}" rendered="#{cadUsuario.verificarUsuarioCoordenador()}"/>
+                <p:menuitem ajax="false" value="#{msg.reviewUnit}" action="#{cadUnidade.revisarUnidade()}" rendered="#{cadUsuario.verificarUsuarioProfessorConteudista()}"/>
+                <p:menuitem ajax="false" value="#{msg.proceedingUnits}" action="#{cadUnidade.tramitarUnidade()}" rendered="#{cadUsuario.verificarUsuarioProfessorConteudista()}"/>
+                <p:menuitem ajax="false" value="#{msg.checkReviewUnit}" action="#{cadRoteiro.verificarRevisoesUnidade()}" rendered="#{cadUsuario.verificarUsuarioCoordenador()}"/>
+            </p:submenu>
+            <p:menuitem ajax="false" value="#{msg.logout}" action="#{cadUsuario.logout()}" icon="ui-icon ui-icon-power" />            
+<!--            <p:menuitem ajax="false" value="TESTE MINDMAP" action="#{cadRoteiro.testeMindMap()}" />      -->
+        </p:menubar>
+
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc"
+                template="template.xhtml">
+
+    <ui:define name="corpo">        
+        <h:form id="formCadastroProjetos" 
+                styleClass="ui-widget">
+            <p:focus context="painelProjeto"/>
+            <p:fieldset legend="#{msg.projects}">                            
+                <h:panelGrid id="painelProjeto" 
+                             columns="3">
+                    <h:outputText value="#{msg.title} : "/>
+                    <udesc:campoPesquisa cad="#{cadProjeto}"                                         
+                                         maxLength="300" form="formCadastroProjetos"/>
+                    <h:outputText/>
+                    <h:outputText value="#{msg.dataInicial} : "/>
+                    <p:calendar value="#{cadProjeto.registro.dataInicio}" 
+                                navigator="true" 
+                                locale="pt_BR"/>
+                    <h:outputText/>                                  
+
+                    <h:outputText value="#{msg.coordinator} : "/>
+                    <p:selectOneMenu value="#{cadProjeto.registro.coordenador}">
+                        <f:selectItems value="#{cadProjeto.usuarios}" 
+                                       var="t"
+                                       itemLabel="#{t.nome}"  
+                                       itemValue="#{t}"/>
+                    </p:selectOneMenu>
+                    <h:outputText/>
+                    <h:outputText value="#{msg.description} : "/>
+                    <p:inputTextarea value="#{cadProjeto.registro.descricao}"                                   
+                                     maxlength="200"
+                                     cols="50" 
+                                     rows="4"
+                                     autoResize="false"                                 
+                                     style="width:800px;height:60px;"/>
+                    <h:outputText/>
+                </h:panelGrid>
+            </p:fieldset>                             
+            <p:tabView id="tabEquipeMatrizDI">
+                <p:tab title="#{msg.equipe}">
+                    <ui:include src="projetosequipe.xhtml"/>
+                </p:tab>
+                <p:tab title="#{msg.matrices}">
+                    <ui:include src="projetosmatrizdi.xhtml"/>
+                </p:tab>
+            </p:tabView>
+            <p:panel>
+                <udesc:crudBotoes cad="#{cadProjeto}" 
+                                  update=":formCadastroProjetos
+                                  :formMenu
+                                  :messages"/> 
+            </p:panel>
+            <ui:include src="projetosunidade.xhtml"/>        
+        </h:form>
+        <udesc:pesquisa id="udescPesq"
+                        title="#{msg.projects}" 
+                        cad="#{cadProjeto}" 
+                        update=":formCadastroProjetos
+                        :messages"
+                        form="formCadastroProjetos"/>
+    </ui:define>    
+
+</ui:composition>

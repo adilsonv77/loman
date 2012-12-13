@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog header="#{msg.contents}" 
+              widgetVar="dialogConteudos"               
+              modal="true" 
+              height="550" 
+              width="600" 
+              resizable="false"
+              appendToBody="true"
+              id="dialogConteudos">
+
+        <p:dataTable id="tabelaConteudos"
+                     emptyMessage="#{msg.noContentsFound}"                      
+                     value="#{cadRoteiro.conteudosDisponiveis}" 
+                     var="conteudo"
+                     paginator="true"
+                     paginatorPosition="both"
+                     rows="15"  
+                     paginatorTemplate="{CurrentPageReport}  
+                     {FirstPageLink} 
+                     {PreviousPageLink} 
+                     {PageLinks} 
+                     {NextPageLink} 
+                     {LastPageLink} 
+                     {RowsPerPageDropdown}">
+            <p:column headerText="#{msg.contents}">                
+                <h:outputText value="#{conteudo.descricao}"/>
+            </p:column>   
+            <p:column>                
+                <p:commandButton type="button" 
+                                 icon="ui-icon-plusthick" 
+                                 onclick="javascript: try{adicionarConteudo(#{conteudo.id},'#{conteudo.descricao}');} catch (e){alert(e);}; return false;"
+                                 onsuccess="return draw()"/>                                 
+            </p:column>   
+        </p:dataTable>
+    </p:dialog>
+
+
+    <p:dialog header="#{msg.editRelationship}" 
+              widgetVar="dialogEditarRelacao"               
+              modal="true" 
+              resizable="false"
+              appendToBody="true"
+              id="dialogEditarRelacao">        
+        <h:panelGrid columns="3" id="painelRelacao">
+            <p:focus context="painelRelacao"/>
+            <h:outputText value="#{msg.relationship}: " />
+            <p:inputText id="edt_relacao" value="#{cadRoteiro.relacao.descricao}" size="50"/>
+        </h:panelGrid>
+        <p:commandButton value="#{msg.alter}" 
+                         onstart="return alterarRelacao()"                          
+                         icon="ui-icon-check"
+                         oncomplete="dialogEditarRelacao.hide()"/>
+        <p:commandButton value="#{msg.cancel}" 
+                         icon="ui-icon-cancel" 
+                         oncomplete="dialogEditarRelacao.hide()"/>
+    </p:dialog>
+
+    <p:confirmDialog message="#{msg.confirmDeleteRelationship}" 
+                     width="250"
+                     header="#{msg.confirm}"
+                     severity="alert"
+                     widgetVar="dialogConfirmDeleteRelacao"
+                     appendToBody="true">  
+        <p:commandButton value="#{msg.yes}"                            
+                         onstart="return excluirRelacao()"
+                         oncomplete="dialogConfirmDeleteRelacao.hide()"
+                         onsuccess="return draw()"/>  
+        <p:commandButton value="#{msg.no}" 
+                         oncomplete="dialogConfirmDeleteRelacao.hide()"/>  
+    </p:confirmDialog>
+    
+    <p:confirmDialog message="#{msg.confirmDeleteContentWithRelationships}" 
+                     width="350"
+                     header="#{msg.confirm}"
+                     severity="alert"
+                     widgetVar="dialogConfirmDeleteConteudoComRelacao"
+                     appendToBody="true">  
+        <p:commandButton value="#{msg.yes}"                            
+                         onstart="return excluirConteudoComRelacao()"
+                         oncomplete="dialogConfirmDeleteConteudoComRelacao.hide()"
+                         onsuccess="return draw()"/>  
+        <p:commandButton value="#{msg.no}" 
+                         oncomplete="dialogConfirmDeleteConteudoComRelacao.hide()"/>  
+    </p:confirmDialog>
+    
+    <p:confirmDialog message="#{msg.confirmDeleteContentWithoutRelationships}" 
+                     width="350"
+                     header="#{msg.confirm}"
+                     severity="alert"
+                     widgetVar="dialogConfirmDeleteConteudoSemRelacao"
+                     appendToBody="true">  
+        <p:commandButton value="#{msg.yes}"                            
+                         onstart="return excluirConteudoSemRelacao()"
+                         oncomplete="dialogConfirmDeleteConteudoSemRelacao.hide()"
+                         onsuccess="return draw()"/>  
+        <p:commandButton value="#{msg.no}" 
+                         oncomplete="dialogConfirmDeleteConteudoSemRelacao.hide()"/>  
+    </p:confirmDialog>
+
+
+</ui:composition> 

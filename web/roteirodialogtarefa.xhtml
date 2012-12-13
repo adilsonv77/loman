@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <p:dialog header="#{msg.task}" 
+              widgetVar="dialogTarefa"               
+              modal="true" 
+              height="550" 
+              width="800" 
+              resizable="false"
+              appendToBody="true"
+              id="dialogTarefa">
+
+        <h:form id="formCadastroTarefas"
+                onsubmit="#{cadRoteiro.setarRegistro()}">
+            <h:panelGrid columns="2">  
+                <h:outputText value="#{msg.slide}:"/>
+                <h:outputText value="#{cadRoteiro.selecSlide.titulo}"/>
+                
+                <h:outputLabel value="#{msg.title}:" 
+                               for="tituloTarefa"/>                
+                <p:inputText id="tituloTarefa"   
+                             value="#{cadRoteiro.selecTarefa.titulo}"                                     
+                             size="70"/>
+
+                <h:outputLabel value="#{msg.description}:" 
+                               for="taTarefa"/>                                
+                <p:inputTextarea id="taTarefa" 
+                                 value="#{cadRoteiro.selecTarefa.descricao}"
+                                 style="width:430px;height:60px;"                             
+                                 maxlength="200"
+                                 cols="50"
+                                 rows="4"                             
+                                 autoResize="false"/>
+
+                <h:outputText value="#{msg.type}:"/>  
+                <p:selectOneRadio id="papelEnum"
+                                  value="#{cadRoteiro.selecTarefa.papelEnum}">
+                    <f:selectItem itemLabel="Designer"
+                                  itemValue="DESIGNER"/>
+                    <f:selectItem itemLabel="Programador"
+                                  itemValue="PROGRAMADOR"/>
+                </p:selectOneRadio>           
+
+                <h:outputText value="#{msg.dataEntrega}:"/>
+                <p:calendar id="tarefaDataEntrega" 
+                            value="#{cadRoteiro.selecTarefa.dataEntrega}"
+                            navigator="true" 
+                            locale="pt_BR"/>                
+
+
+                <p:commandButton id="addTarefa" 
+                                 value="#{msg.add}"                          
+                                 actionListener="#{cadRoteiro.addTarefa}"
+                                 rendered="#{cadRoteiro.alterandoTarefa == false}"
+                                 update=":tabUnidadeSlideTarefa:formCadastroTarefas
+                                 :tabUnidadeSlideTarefa:formTabelaTarefas
+                                 :messages">                      
+                </p:commandButton>
+                <p:commandButton id="alterTarefa" 
+                                 value="#{msg.alter}"                          
+                                 actionListener="#{cadRoteiro.alterarTarefa()}"
+                                 rendered="#{cadRoteiro.alterandoTarefa == true}"
+                                 update=":tabUnidadeSlideTarefa:formCadastroTarefas
+                                 :tabUnidadeSlideTarefa:formTabelaTarefas
+                                 :messages">                      
+                </p:commandButton> 
+                <p:commandButton value="#{msg.newValue}"
+                                 actionListener="#{cadRoteiro.novaTarefa()}"
+                                 update=":tabUnidadeSlideTarefa:formCadastroTarefas"/>
+
+            </h:panelGrid>
+        </h:form>
+
+        <h:form id="formTabelaTarefas">
+            <p:dataTable id="roteiroTarefas" 
+                         emptyMessage="#{msg.noTasksFound}" 
+                         value="#{cadRoteiro.tarefasSlide}"
+                         var="tarefa"
+                         paginator="true"
+                         paginatorPosition="top"
+                         rows="4"
+                         rowIndexVar="linha"
+                         paginatorTemplate="{CurrentPageReport}  
+                         {FirstPageLink} 
+                         {PreviousPageLink} 
+                         {PageLinks} 
+                         {NextPageLink} 
+                         {LastPageLink} 
+                         {RowsPerPageDropdown}">                
+                <p:column sortBy="#{tarefa.titulo}">
+                    <f:facet name="header">
+                        #{msg.task}
+                    </f:facet>
+                    <h:outputText value="#{tarefa.titulo}"/>
+                </p:column>
+                <p:column sortBy="#{tarefa.slide.titulo}">
+                    <f:facet name="header">
+                        #{msg.slide}
+                    </f:facet>
+                    <h:outputText value="#{tarefa.slide.titulo}"/>
+                </p:column>
+                <p:column sortBy="#{tarefa.papelEnum.toString()}">
+                    <f:facet name="header">
+                        #{msg.paper}
+                    </f:facet>
+                    <h:outputText value="#{tarefa.papelEnum.toString()}"/>
+                </p:column>
+                <p:column>                    
+                    <p:commandButton icon="ui-icon ui-icon-pencil"                              
+                                     title="#{msg.alter}"
+                                     actionListener="#{cadRoteiro.alteraTarefa()}"
+                                     update=":tabUnidadeSlideTarefa:formCadastroTarefas
+                                     :tabUnidadeSlideTarefa:formTabelaTarefas">
+                        <f:setPropertyActionListener value="#{tarefa}"
+                                                     target="#{cadRoteiro.selecTarefa}" />
+                    </p:commandButton>                    
+                    <p:commandButton icon="ui-icon ui-icon-close"                              
+                                     title="#{msg.delete}"
+                                     oncomplete="confirmDeleteTarefa.show()">
+                        <f:setPropertyActionListener value="#{tarefa}" 
+                                                     target="#{cadRoteiro.selecTarefa}" />
+                    </p:commandButton>                   
+                </p:column>
+            </p:dataTable> 
+        </h:form>  
+    </p:dialog>
+
+</ui:composition> 

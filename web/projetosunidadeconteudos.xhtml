@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:udesc="http://java.sun.com/jsf/composite/udesc">
+
+    <h:panelGrid columns="1">
+        <h:panelGrid columns="2">
+            <h:outputText value="#{msg.description}: "/> 
+            <h:outputText/>
+            <p:inputTextarea id="taConteudo"
+                             value="#{cadProjeto.selecConteudo.descricao}"
+                             style="width:700px;height:50px;" 
+                             maxlength="200" 
+                             cols="50" 
+                             rows="4"
+                             autoResize="false"/>
+            <p:message for="taConteudo"/>
+        </h:panelGrid>
+        <h:panelGrid columns="3">
+            <p:commandButton actionListener="#{cadProjeto.addConteudo()}" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao
+                             :messages"
+                             value="#{msg.add}"
+                             rendered="#{cadProjeto.alterarConteudo == false}"/>                                
+            <p:commandButton actionListener="#{cadProjeto.alterarConteudo()}"  
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao
+                             :messages"
+                             value="#{msg.alter}"
+                             rendered="#{cadProjeto.alterarConteudo == true}"/>             
+            <p:commandButton actionListener="#{cadProjeto.novoConteudo()}"  
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             value="#{msg.newValue}"/>
+        </h:panelGrid>
+    </h:panelGrid>
+
+    <p:dataTable emptyMessage="#{msg.noContentsFound}" 
+                 value="#{cadProjeto.selecUnidade.conteudos}" 
+                 var="conteudo"
+                 paginator="true"
+                 paginatorPosition="top"
+                 rows="3"  
+                 paginatorTemplate="{CurrentPageReport}  
+                 {FirstPageLink} 
+                 {PreviousPageLink} 
+                 {PageLinks} 
+                 {NextPageLink} 
+                 {LastPageLink} 
+                 {RowsPerPageDropdown}">
+        <p:column style="max-width: 450px; width: 650px;">
+            <f:facet name="header">
+                #{msg.contents}
+            </f:facet>
+            <h:outputText value="#{conteudo.descricao}"/>
+        </p:column>
+        <p:column>
+            <p:commandButton icon="ui-icon ui-icon-pencil" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             title="#{msg.alter}">
+                <f:setPropertyActionListener value="#{conteudo}" 
+                                             target="#{cadProjeto.selecConteudo}" />
+            </p:commandButton>
+            <p:commandButton icon="ui-icon ui-icon-close" 
+                             update=":formCadastroProjetos:tabObjetivoConteudoAtividadeFormaDeAvaliacao"
+                             title="#{msg.delete}"
+                             oncomplete="confirmDeleteConteudo.show()">
+                <f:setPropertyActionListener value="#{conteudo}" 
+                                             target="#{cadProjeto.selecConteudo}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>   
+
+</ui:composition>
